@@ -44,4 +44,22 @@ class UserControllerTest extends TestCase
         $response->assertStatus(422)
             ->assertJsonValidationErrors('email');
     }
+
+    public function testShouldReturn422IfThePasswordIsNotPassed() 
+    {
+        $response = $this->postJson('api/users', [
+            'name' => 'Fulano de tal',
+            'email' => 'test@exemple.com',
+            'creci_number' => '1234567',
+            'profile_picture' => 'http://url.com.br',
+            'city' => 'Arapiraca',
+            'state' => 'Alagoas',
+            'date_of_birth' => '07011997',
+            'is_verified' => 'true'
+        ]);
+
+        $response->assertStatus(422)
+            ->assertJsonValidationErrors('password');
+    }
+
 }
