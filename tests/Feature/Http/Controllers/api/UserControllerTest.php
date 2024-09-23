@@ -62,4 +62,21 @@ class UserControllerTest extends TestCase
             ->assertJsonValidationErrors('password');
     }
 
+    public function testShouldReturn422IfTheCreciNumberIsNotPassed() 
+    {
+        $response = $this->postJson('api/users', [
+            'name' => 'Fulano de tal',
+            'email' => 'test@exemple.com',
+            'password' => 'password123',
+            'profile_picture' => 'http://url.com.br',
+            'city' => 'Arapiraca',
+            'state' => 'Alagoas',
+            'date_of_birth' => '07011997',
+            'is_verified' => 'true'
+        ]);
+
+        $response->assertStatus(422)
+            ->assertJsonValidationErrors('creci_number');
+    }
+
 }
