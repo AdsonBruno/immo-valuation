@@ -40,7 +40,7 @@ class UserController extends Controller
         ]);
 
         return response()->json([
-            'message' => 'User succesfully registered!',
+            'message' => 'User successfully registered!',
             'user' => $user,
             'statusCode' => 201
         ], 201);

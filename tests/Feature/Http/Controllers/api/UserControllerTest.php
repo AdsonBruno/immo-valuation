@@ -8,6 +8,18 @@ use Tests\TestCase;
 
 class UserControllerTest extends TestCase
 {
+    use RefreshDatabase;
+
+    protected function setUp():void
+    {
+        parent::setUp();
+    }
+
+    protected function tearDown(): void
+    {
+        parent::tearDown();
+    }
+
     /**
      * A basic feature test example.
      */
@@ -77,6 +89,36 @@ class UserControllerTest extends TestCase
 
         $response->assertStatus(422)
             ->assertJsonValidationErrors('creci_number');
+    }
+
+    public function testShouldReturn201IfUserIsCreated() {
+        $response = $this->postJson('api/users', [
+            'name' => 'Fulano de tal',
+            'email' => 'test@exemple.com',
+            'password' => 'password123',
+            'creci_number' => '1234567',
+            'profile_picture' => 'http://url.com.br',
+            'city' => 'Arapiraca',
+            'state' => 'Alagoas',
+            'date_of_birth' => '1997-01-07',
+            'is_verified' => 'true'
+        ]);
+
+        $response->assertStatus(201)
+            ->assertJson([
+                'message' => 'User successfully registered!',
+                'user' => [
+                    'name' => 'Fulano de tal',
+                    'email' => 'test@exemple.com',
+                    'creci_number' => '1234567',
+                    'profile_picture' => 'http://url.com.br',
+                    'city' => 'Arapiraca',
+                    'state' => 'Alagoas',
+                    'date_of_birth' => '1997-01-07',
+                    'is_verified' => 'true'
+                ],
+                'statusCode' => 201
+            ]);
     }
 
 }
