@@ -3,13 +3,21 @@
 namespace App\Http\Controllers;
 
 use App\Models\User;
+use App\Notifications\OTPNotification;
+use App\Services\OTPService;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Http\Request;
-use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Hash;
 
 class UserController extends Controller
 {
+    protected $authenticateUser;
+
+    public function __construct(OTPService $authenticateUser)
+    {
+        $this->authenticateUser = $authenticateUser;
+    }
+
     public function createUser(Request $request) 
     {
 
@@ -38,6 +46,10 @@ class UserController extends Controller
             'date_of_birth' => $request->date_of_birth,
             'is_verified' => $request->is_verified
         ]);
+
+        $otpToken = $this->authenticateUser->generateOTP($user);
+
+        $user->notify(new OTPNotification($otpToken));
 
         return response()->json([
             'message' => 'User successfully registered!',

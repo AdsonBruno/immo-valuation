@@ -1,8 +1,11 @@
 <?php
 
 use App\Http\Controllers\UserController;
+use App\Mail\OTPMail;
+use App\Notifications\OTPNotification;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
+use Illuminate\Support\Facades\Mail;
 
 Route::get('/user', function (Request $request) {
     return $request->user();
