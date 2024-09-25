@@ -44,7 +44,6 @@ class UserController extends Controller
             'city' => $request->city,
             'state' => $request->state,
             'date_of_birth' => $request->date_of_birth,
-            'is_verified' => $request->is_verified
         ]);
 
         $otpToken = $this->authenticateUser->generateOTP($user);

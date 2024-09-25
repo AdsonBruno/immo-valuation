@@ -20,7 +20,6 @@ class User extends Authenticatable
         'name',
         'email',
         'password',
-        'is_verified',
         'creci_number',
         'profile_picture',
         'city',
