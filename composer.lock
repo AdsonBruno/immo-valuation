@@ -5402,6 +5402,57 @@
             "time": "2024-09-16T10:07:02+00:00"
         },
         {
+            "name": "tech-ed/simpl-otp",
+            "version": "v1.0.1",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/Edmonbelchev/simpl-otp.git",
+                "reference": "29d2edb44222136e4a7201f0fd66161eb7c4df79"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/Edmonbelchev/simpl-otp/zipball/29d2edb44222136e4a7201f0fd66161eb7c4df79",
+                "reference": "29d2edb44222136e4a7201f0fd66161eb7c4df79",
+                "shasum": ""
+            },
+            "require": {
+                "laravel/framework": "^11.0",
+                "php": "^8.2"
+            },
+            "type": "library",
+            "extra": {
+                "laravel": {
+                    "providers": [
+                        "TechEd\\SimplOtp\\SimplOtpServiceProvider"
+                    ],
+                    "aliases": {
+                        "SimplOtp": "TechEd\\SimplOtp"
+                    }
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "TechEd\\SimplOtp\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Edmon Belchev",
+                    "email": "edmon.cekov@gmail.com"
+                }
+            ],
+            "description": "A simple and lightweight Laravel package for generating and verifying one-time passwords (OTPs), enhancing authentication security in your Laravel applications.",
+            "support": {
+                "issues": "https://github.com/Edmonbelchev/simpl-otp/issues",
+                "source": "https://github.com/Edmonbelchev/simpl-otp/tree/v1.0.1"
+            },
+            "time": "2024-08-24T19:00:00+00:00"
+        },
+        {
             "name": "tijsverkoyen/css-to-inline-styles",
             "version": "v2.2.7",
             "source": {
