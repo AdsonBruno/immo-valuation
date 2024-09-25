@@ -16,12 +16,13 @@ return new class extends Migration
             $table->string('name');
             $table->string('email')->unique();
             $table->string('password');
-            $table->boolean('is_verified');
+            $table->boolean('is_verified')->default(false);
             $table->string('creci_number');
             $table->string('profile_picture');
             $table->string('city');
             $table->string('state');
             $table->date('date_of_birth');
+            $table->timestamp('email_verified_at');
             $table->rememberToken();
             $table->timestamps();
         });
