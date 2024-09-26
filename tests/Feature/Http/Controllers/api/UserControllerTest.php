@@ -7,6 +7,7 @@ use App\Models\User;
 use App\Notifications\OTPNotification;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Notification;
+use TechEd\SimplOtp\SimplOtp;
 use Tests\TestCase;
 
 class UserControllerTest extends TestCase
@@ -158,4 +159,16 @@ class UserControllerTest extends TestCase
         );
     }
 
+    public function testShouldReturn422IfOTPMissing()
+    {
+        $response = $this->postJson('api/v1/user/verify-otp', []);
+
+        $response->assertStatus(422)
+            ->assertJson([
+                'message' => 'Validator failed',
+                'errors' => [
+                'otp' => ['validation.required']],
+                'statusCode' => 422
+            ]);
+    }
 }
