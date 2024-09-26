@@ -2,8 +2,11 @@
 
 namespace Tests\Feature\Http\Controllers\api;
 
+use App\Services\OTPService;
+use App\Models\User;
+use App\Notifications\OTPNotification;
 use Illuminate\Foundation\Testing\RefreshDatabase;
-use Illuminate\Foundation\Testing\WithFaker;
+use Illuminate\Support\Facades\Notification;
 use Tests\TestCase;
 
 class UserControllerTest extends TestCase
@@ -114,10 +117,45 @@ class UserControllerTest extends TestCase
                     'city' => 'Arapiraca',
                     'state' => 'Alagoas',
                     'date_of_birth' => '1997-01-07',
-                    'is_verified' => 'true'
                 ],
                 'statusCode' => 201
             ]);
+    }
+
+    public function testShouldSendOTPNotificationWhenUserIsCreated()
+    {
+        $otpServiceMock = $this->getMockBuilder(OTPService::class)
+            ->onlyMethods(['generateOTP'])
+            ->getMock();
+        
+        $otpServiceMock->expects($this->once())
+            ->method('generateOTP')
+            ->willReturn('1234');
+
+            $this->app->instance(OTPService::class, $otpServiceMock);
+            
+            Notification::fake();
+
+            $response = $this->postJson('api/v1/user', [
+                'name' => 'Fulano de tal',
+                'email' => 'test@example.com',
+                'password' => 'password123',
+                'creci_number' => '1234567',
+                'profile_picture' => 'http://url.com.br',
+                'city' => 'Arapiraca',
+                'state' => 'Alagoas',
+                'date_of_birth' => '1997-01-07',
+            ]);
+
+            $response->assertStatus(201);
+
+            Notification::assertSentTo(
+                [User::where('email', 'test@example.com')->first()],
+                OTPNotification::class,
+                function ($notification) {
+                    return $notification->getOtp() === '1234';
+                }
+        );
     }
 
 }
