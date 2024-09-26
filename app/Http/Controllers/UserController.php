@@ -11,11 +11,11 @@ use Illuminate\Support\Facades\Hash;
 
 class UserController extends Controller
 {
-    protected $authenticateUser;
+    protected $otpService;
 
-    public function __construct(OTPService $authenticateUser)
+    public function __construct(OTPService $otpService)
     {
-        $this->authenticateUser = $authenticateUser;
+        $this->otpService = $otpService;
     }
 
     public function createUser(Request $request) 
@@ -46,7 +46,7 @@ class UserController extends Controller
             'date_of_birth' => $request->date_of_birth,
         ]);
 
-        $otpToken = $this->authenticateUser->generateOTP($user);
+        $otpToken = $this->otpService->generateOTP($user);
 
         $user->notify(new OTPNotification($otpToken));
 
@@ -55,6 +55,39 @@ class UserController extends Controller
             'user' => $user,
             'statusCode' => 201
         ], 201);
+
+    }
+
+    public function verifyOTP(Request $request)
+    {
+        $validator = Validator::make($request->all(), [
+            'otp' => 'required|string|max:6'
+        ]);
+
+        if ($validator->fails()) {
+            return response()->json([
+                'message' => 'Validator failed',
+                'errors' => $validator->errors(),
+                'statusCode' => 422
+            ], 422);
+        }
+
+        $result = $this->otpService->verifyOTP($request);
+        
+        if ($result['status'] === 'error'){
+            return response()->json([
+                'message' => 'OTP validation failed',
+                'result' => $result,
+                'statusCode' => 400
+            ], 400);
+        }
+
+        
+        return response()->json([
+            'message' => 'Successfully validate',
+            'result' => $result,
+            'statusCode' => 200
+        ]);
 
     }
     

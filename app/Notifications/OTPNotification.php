@@ -30,6 +30,10 @@ class OTPNotification extends Notification
         return ['mail'];
     }
 
+    public function getOtp() {
+        return $this->otp;
+    }
+
     /**
      * Get the mail representation of the notification.
      */
