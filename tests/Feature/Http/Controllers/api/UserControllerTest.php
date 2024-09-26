@@ -171,4 +171,35 @@ class UserControllerTest extends TestCase
                 'statusCode' => 422
             ]);
     }
+
+    public function testShouldReturn400IfOTPValidationFails()
+    {
+        $otpServiceMock = $this->getMockBuilder(OTPService::class)
+            ->onlyMethods(['verifyOTP'])
+            ->getMock();
+        
+            $otpServiceMock->expects($this->once())
+                ->method('verifyOTP')
+                ->willReturn([
+                    'status' => 'error', 
+                    'message' => 'Invalid OTP'
+                ]);
+
+                $this->app->instance(OTPService::class, $otpServiceMock);
+
+                $response = $this->postJson('api/v1/user/verify-otp', [
+                    'otp' => '1234'
+                    
+                ]);
+
+                $response->assertStatus(400)
+                    ->assertJson([
+                        'message' => 'OTP validation failed',
+                        'result' => [
+                            'status' => 'error',
+                            'message' => 'Invalid OTP',
+                        ],
+                        'statusCode' => 400
+                    ]);
+    }
 }
