@@ -15,6 +15,26 @@ O ImmoValuation é uma API desenvolvida com PHP e Laravel para facilitar o traba
 
 ## Requisitos
 
+-   PHP >= 8.3
+-   Composer
+-   Postgres
+-   Laravel 11.x
+
+## Instalação
+
+1 - Clone o repositório:
+
+```bash
+  > git clone https://github.com/seu-usuario/immo-valuation.git
+  > cd immo-valuation
+```
+
+2 - Instale as dependências
+
+```bash
+  > composer install
+```
+
 ## Pacotes utilizados
 
 `tech-ed/simpl-otp`
